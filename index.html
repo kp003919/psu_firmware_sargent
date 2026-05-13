@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PSU Control Panel</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #111827;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #f9fafb;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .card {
+      background: #1f2933;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+    }
+    .value {
+      font-size: 22px;
+      margin-top: 4px;
+      color: #f9fafb;
+    }
+    .state-ok { color: #22c55e; }
+    .state-fault { color: #ef4444; }
+    .state-warn { color: #eab308; }
+    #status {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <h1>PSU Control Panel</h1>
+  <div id="status">Connecting to ESP32 WebSocket…</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Voltage</div>
+      <div class="value" id="v_voltage">--.- V</div>
+    </div>
+    <div class="card">
+      <div class="label">Current</div>
+      <div class="value" id="v_current">--.- A</div>
+    </div>
+    <div class="card">
+      <div class="label">Battery</div>
+      <div class="value" id="v_battery">-- %</div>
+    </div>
+    <div class="card">
+      <div class="label">Charging Mode</div>
+      <div class="value" id="v_mode">--</div>
+    </div>
+    <div class="card">
+      <div class="label">State</div>
+      <div class="value" id="v_state">--</div>
+    </div>
+    <div class="card">
+      <div class="label">Fault</div>
+      <div class="value" id="v_fault">OK</div>
+    </div>
+  </div>
+
+  <script>
+    const statusEl   = document.getElementById('status');
+    const vVoltage   = document.getElementById('v_voltage');
+    const vCurrent   = document.getElementById('v_current');
+    const vBattery   = document.getElementById('v_battery');
+    const vMode      = document.getElementById('v_mode');
+    const vState     = document.getElementById('v_state');
+    const vFault     = document.getElementById('v_fault');
+
+    function modeToText(m) {
+      switch (m) {
+        case 0: return 'IDLE';
+        case 1: return 'PRECHARGE';
+        case 2: return 'CHARGING';
+        case 3: return 'FLOAT';
+        case 4: return 'FAULT';
+        default: return m;
+      }
+    }
+
+    function stateToText(s) {
+      // Match your system_state_t enum if you like
+      return s;
+    }
+
+    function faultToText(f) {
+      return f === 0 ? 'OK' : ('FAULT ' + f);
+    }
+
+    function connect() {
+      const ws = new WebSocket('ws://192.168.4.1/');
+
+      ws.onopen = () => {
+        statusEl.textContent = 'Connected to ESP32';
+      };
+
+      ws.onclose = () => {
+        statusEl.textContent = 'Disconnected. Reconnecting in 2s…';
+        setTimeout(connect, 2000);
+      };
+
+      ws.onerror = () => {
+        statusEl.textContent = 'WebSocket error. Reconnecting in 2s…';
+        ws.close();
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+
+          vVoltage.textContent = (data.voltage ?? 0).toFixed(2) + ' V';
+          vCurrent.textContent = (data.current ?? 0).toFixed(2) + ' A';
+          vBattery.textContent = (data.battery_pct ?? 0) + ' %';
+
+          const modeText = modeToText(data.charging_mode);
+          vMode.textContent = modeText;
+
+          const stateText = stateToText(data.state);
+          vState.textContent = stateText;
+
+          const faultText = faultToText(data.fault);
+          vFault.textContent = faultText;
+
+          vFault.classList.remove('state-ok', 'state-fault', 'state-warn');
+          if (data.fault === 0) {
+            vFault.classList.add('state-ok');
+          } else {
+            vFault.classList.add('state-fault');
+          }
+
+        } catch (e) {
+          console.error('Bad JSON:', e);
+        }
+      };
+    }
+
+    connect();
+  </script>
+</body>
+</html>

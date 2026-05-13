@@ -1,0 +1,2 @@
+source C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/bootloader/gdbinit/symbols
+source C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/bootloader/gdbinit/connect
