@@ -10,7 +10,7 @@ C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/mon
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/flash.dir
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/encrypted-flash.dir
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/_project_elf_src.dir
-C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/demo-control-system.elf.dir
+C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/psu_firmware_sargent.elf.dir
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/size.dir
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/size-files.dir
 C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/CMakeFiles/size-components.dir

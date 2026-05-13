@@ -22,4 +22,4 @@ set confirm off
 set confirm on
 
 # Load application symbols
-file C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/demo-control-system.elf
+file C:/Espressif/frameworks/esp-idf-v5.5.4/psu_firmware_sargent/build/psu_firmware_sargent.elf
