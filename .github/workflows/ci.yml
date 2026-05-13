@@ -1,0 +1,26 @@
+name: ESP-IDF CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install ESP-IDF
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        version: v5.1
+
+    - name: Build firmware
+      run: idf.py build
+
+    - name: Run unit tests
+      run: idf.py test
