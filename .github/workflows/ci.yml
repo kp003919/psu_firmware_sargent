@@ -14,10 +14,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install ESP-IDF
-      uses: espressif/esp-idf-ci-action@v1
-      with:
-        version: v5.1
+    - name: Install ESP-IDF manually
+      run: |
+        git clone -b v5.1 --recursive https://github.com/espressif/esp-idf.git
+        ./esp-idf/install.sh esp32
+        . ./esp-idf/export.sh
 
     - name: Build firmware only
       run: idf.py build
