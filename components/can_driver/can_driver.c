@@ -6,6 +6,8 @@
 #include "can_driver.h"
 #include "esp_log.h"
 #include "driver/twai.h"
+#include <inttypes.h>
+
 
 // =========================================================
 //  CONFIGURATION
@@ -58,7 +60,10 @@ esp_err_t can_driver_init(void)
 esp_err_t can_driver_transmit(const twai_message_t *msg)
 {
 #if CAN_SIMULATION_MODE
-    ESP_LOGI(TAG, "[SIM] TX ID=0x%03X DLC=%d", msg->identifier, msg->data_length_code);
+    ESP_LOGI(TAG, "[SIM] TX ID=0x%03" PRIx32 " DLC=%d",
+         msg->identifier,
+         msg->data_length_code);
+
     return ESP_OK;
 
 #else
