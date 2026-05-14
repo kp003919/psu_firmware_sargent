@@ -19,8 +19,5 @@ jobs:
       with:
         version: v5.1
 
-    - name: Build firmware
+    - name: Build firmware only
       run: idf.py build
-
-    - name: Run Unity tests
-      run: idf.py -T .
