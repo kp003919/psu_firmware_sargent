@@ -26,10 +26,10 @@ jobs:
 
     - name: Fix missing setuptools in ESP-IDF venv
       run: |
-        source ./esp-idf/export.sh
+        . ./esp-idf/export.sh
         pip install --upgrade pip setuptools wheel
 
     - name: Build firmware
       run: |
-        source ./esp-idf/export.sh
+        . ./esp-idf/export.sh
         idf.py build
